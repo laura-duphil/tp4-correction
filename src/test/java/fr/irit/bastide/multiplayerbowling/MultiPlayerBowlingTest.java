@@ -37,8 +37,9 @@ public class MultiPlayerBowlingTest {
 	public void testGameFinishes() throws Exception {
 		String[] playerNames = {"Zorglub", "Albator"};
 		multiGame.startNewGame(playerNames);
-		// Tout dans la rigole
-		rollMany(20, 0);
+		// Tout dans la rigole : n joueurs * 10 tours * 2 boules par tour
+		String message = rollMany(playerNames.length * 10 * 2, 0);
+		assertEquals("Partie terminée", message);
 		// Un lancer de trop doit lever une exception
 		multiGame.lancer(0);
 	}
@@ -66,10 +67,6 @@ public class MultiPlayerBowlingTest {
 		multiGame.lancer(10);	
 		assertEquals(  0, multiGame.scoreFor("Rookie"));
 		assertEquals(300, multiGame.scoreFor("Champion"));
-	}
-
-	@Test
-	public void testScoreFor() throws Exception {
 	}
 
 	// Quelques methodes utilitaires pour faciliter l'écriture des tests

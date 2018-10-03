@@ -3,19 +3,33 @@ package fr.irit.bastide.multiplayerbowling;
 import bowling.Frame;
 import bowling.MultiPlayerGame;
 import bowling.SinglePlayerGame;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MultiPlayerBowling implements MultiPlayerGame {
 
 	private static final String DISPLAY  = "Prochain tir : joueur %s, tour n° %d, boule n° %d";
 	private static final String FINISHED = "Partie terminée";	
-	private final Map<String, SinglePlayerGame> games = new LinkedHashMap<>();
+	// Associe chaque joueur à son jeu
+	// note : on déclare la variable avec une interface (Map)
+	private final Map<String, SinglePlayerGame> games;
+	// Permet de parcourir les noms de joueurs
 	private Iterator<String> playerIterator;
+	// Le nom du joueur courant
 	private String currentPlayerName;
+	// Le jeu du joueur courant
 	private SinglePlayerGame currentGame;
+	// Est-ce que le jeu est en cours
 	private boolean gameIsRunning = false;
+	
+	public MultiPlayerBowling() {
+		// note : on initialise la variable en choisissant une implémentation (LinkedHashMap)
+		 games = new LinkedHashMap<>();
+		 // games = new TreeMap<>(); // Avec TreeMap ça ne marche pas, pourquoi ?
+	}
 
 	@Override
 	public String startNewGame(String[] playerNames) throws Exception {
@@ -65,9 +79,9 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 	private boolean changeToNextPlayer() {
 		if (!playerIterator.hasNext()) { // On a passé tous les joueurs
 			if (currentGame.getCurrentFrame().getFrameNumber() == 10) { // On est au dernier tour
-				return false;
+				return false; // Le jeu est terminé
 			} else { // On démarre un nouveau tour
-				playerIterator = games.keySet().iterator();
+				playerIterator = games.keySet().iterator(); // On réinitialise l'itérateur
 			}
 		}
 		currentPlayerName = playerIterator.next();
@@ -92,6 +106,7 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 
 	@Override
 	public int scoreFor(String playerName) throws Exception {
+		// On trouve le jeu associé au nom du joueur
 		SinglePlayerGame game = games.get(playerName);
 		
 		if (game == null)
