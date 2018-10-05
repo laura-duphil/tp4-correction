@@ -27,8 +27,8 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 	
 	public MultiPlayerBowling() {
 		// note : on initialise la variable en choisissant une implémentation (LinkedHashMap)
-		 games = new LinkedHashMap<>();
-		 // games = new TreeMap<>(); // Avec TreeMap ça ne marche pas, pourquoi ?
+		games = new LinkedHashMap<>();
+		//games = new TreeMap<>(); // Avec TreeMap ça ne marche pas, pourquoi ?
 	}
 
 	@Override
