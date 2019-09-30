@@ -1,13 +1,10 @@
 package fr.irit.bastide.multiplayerbowling;
 
-import bowling.Frame;
 import bowling.MultiPlayerGame;
 import bowling.SinglePlayerGame;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class MultiPlayerBowling implements MultiPlayerGame {
 
@@ -64,7 +61,7 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 		currentGame.lancer(nombreDeQuillesAbattues);
 
 		// Si le tour du joueur est terminé
-		if (currentGame.getCurrentFrame().isFinished()) {
+		if (currentGame.isFinished() || currentGame.hasCompletedFrame()) {
 			// On passe au joueur suivant
 			gameIsRunning = changeToNextPlayer();
 		}
@@ -78,7 +75,7 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 	 */
 	private boolean changeToNextPlayer() {
 		if (!playerIterator.hasNext()) { // On a passé tous les joueurs
-			if (currentGame.getCurrentFrame().getFrameNumber() == 10) { // On est au dernier tour
+			if (currentGame.isFinished() ) { // Le dernier joueur a fini
 				return false; // Le jeu est terminé
 			} else { // On démarre un nouveau tour
 				playerIterator = games.keySet().iterator(); // On réinitialise l'itérateur
@@ -97,9 +94,8 @@ public class MultiPlayerBowling implements MultiPlayerGame {
 		if (!gameIsRunning) {
 			return FINISHED;
 		} else {
-			Frame currentFrame = currentGame.getCurrentFrame();
-			int tour = currentFrame.getFrameNumber();
-			int ball = currentFrame.getBallsThrown() + 1;
+			int tour = currentGame.getFrameNumber();
+			int ball = currentGame.getNextBallNumber();
 			return String.format(DISPLAY, currentPlayerName, tour, ball);
 		}
 	}

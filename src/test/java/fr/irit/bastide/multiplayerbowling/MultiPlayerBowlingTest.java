@@ -11,7 +11,25 @@ public class MultiPlayerBowlingTest {
 	public void setUp() {
 		multiGame = new MultiPlayerBowling();
 	}
-	
+
+	@Test
+	public void testRookieVersusChampion() throws Exception {
+		String[] playerNames = {"Rookie", "Champion"};
+		multiGame.startNewGame(playerNames);
+		for (int tour = 0; tour < 10; tour ++) {
+			// Le rookie fait deux rigoles
+			multiGame.lancer(0);			
+			multiGame.lancer(0);			
+			// Le champion fait un strike
+			multiGame.lancer(10);
+		}
+		// Le champion a droit à deux boules de plus
+		multiGame.lancer(10);
+		multiGame.lancer(10);	
+		assertEquals(  0, multiGame.scoreFor("Rookie"));
+		assertEquals(300, multiGame.scoreFor("Champion"));
+	}
+        
 	@Test (expected = Exception.class)
 	public void needOnePlayer() throws Exception {
 		String[] playerNames = {};
@@ -49,24 +67,6 @@ public class MultiPlayerBowlingTest {
 		String[] playerNames = {"Zorglub", "Albator"};
 		multiGame.startNewGame(playerNames);
 		int score = multiGame.scoreFor("Unknown");
-	}
-
-	@Test
-	public void testRookieVersusChampion() throws Exception {
-		String[] playerNames = {"Rookie", "Champion"};
-		multiGame.startNewGame(playerNames);
-		for (int tour = 0; tour <10; tour ++) {
-			// Le rookie fait deux rigoles
-			multiGame.lancer(0);			
-			multiGame.lancer(0);			
-			// Le champion fait un strike
-			multiGame.lancer(10);
-		}
-		// Le champion a droit à deux boules de plus
-		multiGame.lancer(10);
-		multiGame.lancer(10);	
-		assertEquals(  0, multiGame.scoreFor("Rookie"));
-		assertEquals(300, multiGame.scoreFor("Champion"));
 	}
 
 	// Quelques methodes utilitaires pour faciliter l'écriture des tests
